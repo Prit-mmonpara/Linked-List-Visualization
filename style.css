@@ -1,0 +1,85 @@
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f7f9fc;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+#controls {
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#linked-list-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 20px;
+  border: 2px solid #007bff;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.node {
+  padding: 10px 20px;
+  margin: 5px;
+  border: 2px solid #007bff;
+  border-radius: 10px;
+  background-color: #e7f1ff;
+  font-weight: bold;
+  position: relative;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.arrow {
+  margin: 5px;
+  font-size: 24px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.arrow::before {
+  content: "→";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.node.highlight-new {
+  background-color: #c3f0ca; /* Light green for new nodes */
+}
+
+.node.highlight-removed {
+  background-color: #f0c3c3; /* Light red for removed nodes */
+}
+
+.node.highlight-current {
+  background-color: #fcebb6; /* Light yellow for current nodes */
+}
+
+.arrow.highlight {
+  color: #ff9800; /* Orange for pointer updates */
+}
