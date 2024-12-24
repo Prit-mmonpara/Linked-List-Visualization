@@ -1,0 +1,161 @@
+# Object-Oriented Programming (OOP)
+JavaScript's four main principles for oop: **Encapsulation**, **Inheritance**, **Polymorphism**, and **Abstraction**.
+
+---
+
+### 1. **Encapsulation**
+Encapsulation means bundling data and methods that operate on that data within a single unit (an object) and restricting access to some components.
+
+#### Example:
+```javascript
+class Person {
+    #name; // Private property (introduced with ES2021)
+    constructor(name, age) {
+        this.#name = name;
+        this.age = age;
+    }
+
+    getName() {
+        return this.#name; // Public method accessing private property
+    }
+
+    setName(newName) {
+        this.#name = newName;
+    }
+}
+
+const person = new Person("Alice", 30);
+console.log(person.getName()); // Alice
+person.setName("Bob");
+console.log(person.getName()); // Bob
+// console.log(person.#name); // Error: Private field cannot be accessed directly
+```
+
+---
+
+### 2. **Inheritance**
+Inheritance allows a class to inherit properties and methods from another class. It enables reusability and the creation of hierarchical relationships.
+
+#### Example:
+```javascript
+class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+
+    makeSound() {
+        console.log("Some generic sound");
+    }
+}
+
+class Dog extends Animal {
+    constructor(name, breed) {
+        super(name); // Calls the parent class constructor
+        this.breed = breed;
+    }
+
+    makeSound() {
+        console.log("Woof! Woof!"); // Overriding the parent method
+    }
+}
+
+const dog = new Dog("Buddy", "Golden Retriever");
+console.log(dog.name); // Buddy
+dog.makeSound(); // Woof! Woof!
+```
+
+---
+
+### 3. **Polymorphism**
+Polymorphism means having multiple forms. In JavaScript, this is commonly achieved by method overriding or implementing interfaces in other patterns.
+
+#### Example:
+```javascript
+class Shape {
+    area() {
+        throw new Error("Method 'area()' must be implemented.");
+    }
+}
+
+class Rectangle extends Shape {
+    constructor(width, height) {
+        super();
+        this.width = width;
+        this.height = height;
+    }
+
+    area() {
+        return this.width * this.height; // Different behavior
+    }
+}
+
+class Circle extends Shape {
+    constructor(radius) {
+        super();
+        this.radius = radius;
+    }
+
+    area() {
+        return Math.PI * this.radius ** 2; // Different behavior
+    }
+}
+
+const shapes = [new Rectangle(10, 20), new Circle(10)];
+shapes.forEach(shape => console.log(shape.area()));
+// Output: 200, 314.159...
+```
+
+---
+
+### 4. **Abstraction**
+Abstraction involves hiding implementation details and exposing only the essential features of an object.
+dont show any properties hidding the properties.
+
+#### Example:
+```javascript
+class Car {
+    constructor(make, model) {
+        this.make = make;
+        this.model = model;
+    }
+
+    startEngine() {
+        console.log(`${this.make} ${this.model}'s engine started.`);
+    }
+
+    drive() {
+        console.log(`${this.make} ${this.model} is driving.`);
+    }
+}
+
+const car = new Car("Toyota", "Corolla");
+car.startEngine(); // Toyota Corolla's engine started.
+car.drive(); // Toyota Corolla is driving.
+// Internal details of how "startEngine" or "drive" work are hidden.
+```
+
+---
+
+### Key Features of OOP in JavaScript
+1. **Classes and Objects**: Classes are blueprints for creating objects.
+   ```javascript
+   class User {
+       constructor(name) {
+           this.name = name;
+       }
+   }
+   const user1 = new User("John");
+   console.log(user1.name); // John
+   ```
+
+2. **Prototypes**: JavaScript uses prototypal inheritance.
+   ```javascript
+   function Person(name) {
+       this.name = name;
+   }
+   Person.prototype.greet = function () {
+       console.log(`Hello, my name is ${this.name}`);
+   };
+   const person = new Person("Alice");
+   person.greet(); // Hello, my name is Alice
+   ```
