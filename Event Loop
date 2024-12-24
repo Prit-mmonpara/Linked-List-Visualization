@@ -1,0 +1,184 @@
+# The JavaScript event loop
+
+---
+
+### **How It Works**
+1. **Call Stack**:
+   - The place where JavaScript keeps track of function calls. Functions are added to the stack when invoked and removed when execution is complete.
+   
+2. **Web APIs/Background Tasks**:
+   - Asynchronous tasks (e.g., `setTimeout`, `fetch`) are offloaded to the browser or Node.js runtime, and the main thread continues executing other code.
+
+3. **Task Queue/Callback Queue**:
+   - When an asynchronous operation completes, its callback is added to the task queue, waiting for execution.
+
+4. **Event Loop**:
+   - Continuously monitors the call stack and task queue. If the call stack is empty, the event loop dequeues tasks from the task queue and pushes them onto the call stack for execution.
+
+---
+
+### **Key Components of the Event Loop**
+
+1. **Call Stack**:
+   - Executes synchronous code.
+   - Functions are added and removed in a LIFO (Last In, First Out) order.
+
+2. **Microtask Queue**:
+   - Tasks like `process.nextTick` and Promises (via `.then`) are added here.
+   - These have higher priority than the **Callback Queue** and are executed immediately after the current stack is empty.
+
+3. **Callback Queue (Macro Queue)**:
+   - Tasks like `setTimeout` and `setInterval` callbacks are added here.
+   - The event loop checks this queue only after executing all microtasks.
+
+---
+
+### **Order of Execution**
+1. The **Call Stack** is executed first.
+2. After the stack is empty, all tasks in the **Microtask Queue** are executed.
+3. The **Callback Queue** is processed if no microtasks remain.
+
+---
+
+### **`process.nextTick`**
+- **Priority**: Executes before any other asynchronous operations, including Promises.
+- **Usage**: Used to delay execution until the current operation completes but before the event loop continues.
+
+#### Example:
+```javascript
+console.log("Start");
+
+process.nextTick(() => {
+    console.log("process.nextTick");
+});
+
+Promise.resolve().then(() => {
+    console.log("Promise");
+});
+
+console.log("End");
+```
+
+**Output**:
+```
+Start
+End
+process.nextTick
+Promise
+```
+
+**Explanation**:
+1. `process.nextTick` is added to the Microtask Queue.
+2. The Promise's `.then` is also a microtask but runs after `process.nextTick`.
+
+---
+
+### **`setTimeout`**
+- Executes its callback after the specified delay, but only when the call stack and microtasks are clear.
+- It’s added to the **Callback Queue**.
+
+#### Example:
+```javascript
+console.log("Start");
+
+setTimeout(() => {
+    console.log("setTimeout");
+}, 0);
+
+console.log("End");
+```
+
+**Output**:
+```
+Start
+End
+setTimeout
+```
+
+**Explanation**:
+1. `setTimeout` adds the callback to the **Callback Queue**.
+2. It waits for the call stack to clear before executing.
+
+---
+
+### **`setInterval`**
+- Repeatedly executes its callback after the specified interval.
+- Each execution is added to the **Callback Queue**.
+
+#### Example:
+```javascript
+let count = 0;
+
+const intervalId = setInterval(() => {
+    console.log(`Interval count: ${++count}`);
+    if (count === 3) {
+        clearInterval(intervalId);
+    }
+}, 1000);
+```
+
+**Output** (printed every second):
+```
+Interval count: 1
+Interval count: 2
+Interval count: 3
+```
+
+**Explanation**:
+1. `setInterval` executes the callback repeatedly.
+2. `clearInterval` stops the repetition when the condition is met.
+
+---
+
+### **Combined Example: Understanding Execution Order**
+```javascript
+console.log("Start");
+
+setTimeout(() => {
+    console.log("setTimeout");
+}, 0);
+
+setInterval(() => {
+    console.log("setInterval");
+}, 2000);
+
+Promise.resolve().then(() => {
+    console.log("Promise");
+});
+
+process.nextTick(() => {
+    console.log("process.nextTick");
+});
+
+console.log("End");
+```
+
+**Output**:
+```
+Start
+End
+process.nextTick
+Promise
+setTimeout
+setInterval
+(setInterval continues every 2000ms)
+```
+
+**Explanation**:
+1. `console.log("Start")` and `console.log("End")` are synchronous, so they execute first.
+2. `process.nextTick` is executed before Promises because it has the highest priority.
+3. The Promise callback runs after `process.nextTick`.
+4. The `setTimeout` callback is executed from the Callback Queue after the stack and microtasks are clear.
+5. `setInterval` starts executing after its first interval, every 2000ms.
+
+---
+
+### **Key Differences**
+| Feature              | `process.nextTick`                 | `setTimeout`          | `setInterval`          |
+|-----------------------|-------------------------------------|-----------------------|------------------------|
+| **Execution Queue**   | Microtask Queue                    | Callback Queue        | Callback Queue         |
+| **Priority**          | Highest (runs before Promises)     | Lower than microtasks | Lower than microtasks  |
+| **Timing**            | Immediate (next event loop phase)  | After specified delay | Repeats after interval |
+| **Use Case**          | Critical operations like cleanup   | Delayed execution     | Periodic execution     |
+
+---
