@@ -1,0 +1,336 @@
+# JSON (JavaScript Object Notation)
+
+
+---
+
+### **1. What is JSON in JavaScript?**
+- JSON is a string representation of JavaScript objects.
+- It follows a strict syntax for data exchange.
+
+#### Example:
+```javascript
+// JSON string
+const jsonString = '{"name": "Alice", "age": 25, "isStudent": false}';
+
+// Parsing JSON into a JavaScript object
+const jsObject = JSON.parse(jsonString);
+
+console.log(jsObject.name); // Output: Alice
+console.log(jsObject.age);  // Output: 25
+```
+
+---
+
+### **2. How to convert a JavaScript object to JSON?**
+- Use `JSON.stringify()` to convert objects to JSON strings.
+
+#### Example:
+```javascript
+const user = {
+  name: "Bob",
+  age: 30,
+  isStudent: true
+};
+
+// Convert to JSON string
+const jsonString = JSON.stringify(user);
+
+console.log(jsonString);
+// Output: '{"name":"Bob","age":30,"isStudent":true}'
+```
+
+---
+
+### **3. How to handle nested JSON objects?**
+- Nested JSON objects can be parsed and accessed like regular JavaScript objects.
+
+#### Example:
+```javascript
+const jsonString = '{"user": {"name": "Charlie", "details": {"age": 29, "city": "New York"}}}';
+
+// Parse the JSON string
+const jsObject = JSON.parse(jsonString);
+
+// Access nested properties
+console.log(jsObject.user.name);       // Output: Charlie
+console.log(jsObject.user.details.age); // Output: 29
+```
+
+---
+
+### **4. What happens if JSON is invalid?**
+- Parsing an invalid JSON string throws an error.
+
+#### Example:
+```javascript
+try {
+  const jsonString = '{"name": "Eve", "age": 25, }'; // Invalid JSON
+  JSON.parse(jsonString); // Throws an error
+} catch (error) {
+  console.error("Error parsing JSON:", error.message);
+}
+// Output: Error parsing JSON: Unexpected token } in JSON
+```
+
+---
+
+### **5. How to iterate through JSON data?**
+- Use loops to traverse JSON objects or arrays.
+
+#### Example:
+```javascript
+const jsonString = '{"users": [{"name": "Dave", "age": 24}, {"name": "Anna", "age": 22}]}';
+const jsObject = JSON.parse(jsonString);
+
+jsObject.users.forEach(user => {
+  console.log(`${user.name} is ${user.age} years old.`);
+});
+// Output:
+// Dave is 24 years old.
+// Anna is 22 years old.
+```
+
+---
+
+### **6. Can JSON store arrays and objects together?**
+- Yes, JSON can store arrays, objects, and primitive types together.
+
+#### Example:
+```javascript
+const jsonString = '{"name": "Team", "members": ["John", "Jane", "Jack"], "isActive": true}';
+const jsObject = JSON.parse(jsonString);
+
+console.log(jsObject.name);         // Output: Team
+console.log(jsObject.members[1]);   // Output: Jane
+console.log(jsObject.isActive);     // Output: true
+```
+
+---
+
+### **7. What is the difference between JSON and JavaScript objects?**
+#### Example:
+```javascript
+// JSON string
+const jsonString = '{"name": "Tom", "age": 28}';
+
+// JavaScript object
+const jsObject = { name: "Tom", age: 28 };
+
+console.log(typeof jsonString); // Output: string
+console.log(typeof jsObject);   // Output: object
+```
+
+- JSON is a string, while JavaScript objects are directly manipulable.
+
+---
+
+### **8. How to validate JSON?**
+- Try parsing it and catch errors.
+
+#### Example:
+```javascript
+function isValidJSON(str) {
+  try {
+    JSON.parse(str);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+console.log(isValidJSON('{"key": "value"}')); // Output: true
+console.log(isValidJSON('{key: "value"}'));  // Output: false
+```
+
+---
+
+### **9. How to fetch and use JSON data from an API?**
+- Use `fetch` to retrieve JSON from a URL.
+
+#### Example:
+```javascript
+fetch('https://pure.srk.one/exposed/inquiry/getStoneLayoutParameter/v1')
+  .then(response => response.json()) // Parse JSON
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => console.error("Error:", error));
+```
+
+---
+
+### **10. How to stringify objects with custom formatting?**
+- Use the third argument of `JSON.stringify()` for pretty-printing.
+
+#### Example:
+```javascript
+const user = { name: "Sam", age: 26, hobbies: ["reading", "gaming"] };
+
+const jsonString = JSON.stringify(user, null, 2);
+console.log(jsonString);
+/*
+Output:
+{
+  "name": "Sam",
+  "age": 26,
+  "hobbies": [
+    "reading",
+    "gaming"
+  ]
+}
+*/
+```
+
+## QUESTIONS
+---
+
+### **Basic Level**
+1. **True/False**: JSON is a valid JavaScript object.
+   - **Answer**: False (JSON is a string representation of data).
+
+2. **Question**: What is the purpose of `JSON.stringify()` in JavaScript?
+   - **Answer**: It converts a JavaScript object or array into a JSON string.
+
+3. **Code Question**: What will be the output of the following code?
+   ```javascript
+   const jsonString = '{"name": "Alice", "age": 30}';
+   const jsObject = JSON.parse(jsonString);
+   console.log(jsObject.name);
+   ```
+   - **Answer**: `Alice`
+
+4. **Multiple Choice**: Which of the following is a valid JSON string?
+   a) `"{key: 'value'}"`  
+   b) `'{"key": "value"}'`  
+   c) `"{'key': 'value'}"`  
+   d) `'key: value'`
+   - **Answer**: b
+
+---
+
+### **Intermediate Level**
+5. **Question**: Convert the following JavaScript object into a JSON string:
+   ```javascript
+   const student = { name: "John", age: 18, subjects: ["Math", "Science"] };
+   ```
+   - **Answer**: `JSON.stringify(student);`
+
+6. **Code Question**: What will be the output of the following code?
+   ```javascript
+   const jsonString = '{"status": "active", "users": [{"id": 1}, {"id": 2}]}';
+   const jsObject = JSON.parse(jsonString);
+   console.log(jsObject.users[1].id);
+   ```
+   - **Answer**: `2`
+
+7. **Fix the Error**: The following JSON string throws an error when parsed. Why?
+   ```javascript
+   const jsonString = '{"name": "Alice", "age": }';
+   JSON.parse(jsonString);
+   ```
+   - **Answer**: The value for the `age` key is missing.
+
+8. **Question**: How would you access the value of `city` in the following JSON string?
+   ```javascript
+   const jsonString = '{"address": {"city": "Paris", "zip": 75001}}';
+   ```
+   - **Answer**:
+   ```javascript
+   const jsObject = JSON.parse(jsonString);
+   console.log(jsObject.address.city); // Output: Paris
+   ```
+
+9. **True/False**: JSON keys must always be enclosed in double quotes.
+   - **Answer**: True
+
+---
+
+### **Advanced Level**
+10. **Code Question**: Write a function that checks if a given string is valid JSON.
+    - **Answer**:
+    ```javascript
+    function isValidJSON(str) {
+      try {
+        JSON.parse(str);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+    ```
+
+11. **Scenario**: You receive JSON data from an API as a string:
+    ```json
+    {
+      "employees": [
+        { "id": 1, "name": "John" },
+        { "id": 2, "name": "Jane" }
+      ]
+    }
+    ```
+    Write JavaScript code to log the name of the employee with ID 2.
+    - **Answer**:
+    ```javascript
+    const jsonString = '{"employees":[{"id":1,"name":"John"},{"id":2,"name":"Jane"}]}';
+    const jsObject = JSON.parse(jsonString);
+    const employee = jsObject.employees.find(emp => emp.id === 2);
+    console.log(employee.name); // Output: Jane
+    ```
+
+12. **Debugging**: The following code logs `undefined`. Why? How would you fix it?
+    ```javascript
+    const jsonString = '{"person": {"name": "Alice", "age": 25}}';
+    const jsObject = JSON.parse(jsonString);
+    console.log(jsObject.name);
+    ```
+    - **Answer**: The key `name` is nested inside `person`. The correct code is:
+    ```javascript
+    console.log(jsObject.person.name);
+    ```
+
+13. **Question**: What will the following code output?
+    ```javascript
+    const obj = { a: 1, b: undefined, c: null };
+    const jsonString = JSON.stringify(obj);
+    console.log(jsonString);
+    ```
+    - **Answer**: `{"a":1,"c":null}` (Undefined values are excluded in JSON strings.)
+
+14. **Scenario**: Write code to merge the following two JSON strings into one object:
+    ```javascript
+    const json1 = '{"name": "Alice"}';
+    const json2 = '{"age": 30}';
+    ```
+    - **Answer**:
+    ```javascript
+    const obj1 = JSON.parse(json1);
+    const obj2 = JSON.parse(json2);
+    const merged = { ...obj1, ...obj2 };
+    console.log(merged); // Output: { name: "Alice", age: 30 }
+    ```
+
+---
+
+### **Challenge Question**
+15. **Scenario**: You have the following JSON:
+    ```json
+    {
+      "products": [
+        { "id": 1, "name": "Laptop", "price": 1000 },
+        { "id": 2, "name": "Phone", "price": 500 }
+      ]
+    }
+    ```
+    Write a function to calculate the total price of all products.
+    - **Answer**:
+    ```javascript
+    const jsonString = '{"products":[{"id":1,"name":"Laptop","price":1000},{"id":2,"name":"Phone","price":500}]}';
+    const jsObject = JSON.parse(jsonString);
+
+    function getTotalPrice(products) {
+      return products.reduce((total, product) => total + product.price, 0);
+    }
+
+    console.log(getTotalPrice(jsObject.products)); // Output: 1500
+    ```
+---
